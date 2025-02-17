@@ -1,7 +1,9 @@
 package main
 
-import fynepos "supportMod/fynePos"
+import (
+	fynepos2 "supportMod/fynePos2"
+)
 
 func main() {
-	fynepos.App()
+	fynepos2.App()
 }
