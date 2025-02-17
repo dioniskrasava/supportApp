@@ -81,6 +81,7 @@ func createNewCont(listLabel []string, listUM []string) *fyne.Container {
 				break
 			}
 			label := widget.NewLabel(listLabel[n])
+			//label2 := widget.NewRichText()
 			entry := widget.NewEntry()
 			labelUM := widget.NewLabel(listUM[n]) // Unit Measure - единицы измерения
 			n++

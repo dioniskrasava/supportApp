@@ -1,9 +1,10 @@
 package main
 
 import (
-	fynepos2 "supportMod/fynePos2"
+	"supportMod/frichtext"
 )
 
 func main() {
-	fynepos2.App()
+	//fynepos2.App()
+	frichtext.App()
 }
