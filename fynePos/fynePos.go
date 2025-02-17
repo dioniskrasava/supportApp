@@ -1,6 +1,9 @@
 package fynepos
 
 import (
+	"fmt"
+	"log"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -9,7 +12,12 @@ import (
 
 const (
 	WIDTH_WINDOW  = 400
-	HEIGHT_WINDOW = 300
+	HEIGHT_WINDOW = 600
+)
+
+var (
+	vitaminsList   = []string{"A", "b-car", "B1", "B2", "B4 Холин", "B5", "B6", "B9", "B12", "C", "D", "E", "H", "K", "PP"}   // Список меток для создания
+	vitaminsListUM = []string{"mcg", "mg", "mg", "mg", "mg", "mg", "mg", "mcg", "mcg", "mg", "mcg", "mg", "mcg", "mcg", "mg"} // единицы измерен
 )
 
 func App() {
@@ -17,9 +25,26 @@ func App() {
 	w := a.NewWindow("Table with Labels and Entries")
 	w.Resize(fyne.NewSize(WIDTH_WINDOW, HEIGHT_WINDOW))
 
-	// Данные для меток в первом столбце
-	labels := []string{"A", "B", "C", "Холин"}
-	labelsUM := []string{"mcg", "mg", "mg", "mg"}
+	// Запрещаем изменение размера окна
+	w.SetFixedSize(true)
+
+	table, entries := createTable(vitaminsList, vitaminsListUM)
+
+	for key, value := range entries {
+		fmt.Println(key, value.Text)
+		value.OnChanged = func(s string) {
+			log.Printf("%s changed to %s\n", key, s)
+		}
+	}
+
+	w.SetContent(table)
+	w.Show()
+	a.Run()
+}
+
+func createTable(labels []string, labelsUM []string) (*widget.Table, map[string]*widget.Entry) {
+
+	entries := make(map[string]*widget.Entry) // Карта для хранения полей ввода
 
 	// Создаем таблицу с двумя столбцами
 	table := widget.NewTable(
@@ -45,6 +70,7 @@ func App() {
 				entry.SetPlaceHolder("0")
 				entry.Show()
 				stack.Objects[0].(*widget.Label).Hide()
+				entries[labels[tci.Row]] = entry // ДОБАВЛЯЕМ НАШИ ЕНТРИ ПО КЛЮЧУ (ЗНАЧЕНИЕ ЛЕЙБЛА)
 			} else if tci.Col == 2 {
 				label := stack.Objects[0].(*widget.Label)
 				label.SetText(labelsUM[tci.Row])
@@ -58,7 +84,7 @@ func App() {
 	table.SetColumnWidth(0, 75) // Первый столбец шире (200 пикселей)
 	table.SetColumnWidth(1, 50) // Второй столбец уже (100 пикселей)
 
-	w.SetContent(table)
-	w.Show()
-	a.Run()
+	log.Println(entries)
+
+	return table, entries
 }
