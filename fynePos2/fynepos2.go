@@ -1,12 +1,16 @@
 package fynepos2
 
 import (
-	"fmt"
-
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
+)
+
+const (
+	WIDTH_WINDOW  = 500
+	HEIGHT_WINDOW = 200
 )
 
 var (
@@ -20,12 +24,17 @@ var (
 )
 
 func App() {
+	myApp := app.New()                           // Создаем новое приложение
+	myWindow := myApp.NewWindow("Nutrition app") // Создаем новое окно
+	myWindow.Resize(fyne.NewSize(WIDTH_WINDOW, HEIGHT_WINDOW))
 
 	globalListLabel := createGlobalList(vitaminsList, mineralsMacroList, mineralsMicroList)
 	globalListLabelUM := createGlobalList(vitaminsListUM, mineralsMacroListUM, mineralsMicroListUM)
 
-	createNewCont(globalListLabel, globalListLabelUM)
+	globalContainer := createNewCont(globalListLabel, globalListLabelUM)
 
+	myWindow.SetContent(globalContainer) // Устанавливаем содержимое основного окна
+	myWindow.ShowAndRun()                // Запускаем приложение
 }
 
 func createGlobalList(list1 []string, list2 []string, list3 []string) []string {
@@ -35,7 +44,7 @@ func createGlobalList(list1 []string, list2 []string, list3 []string) []string {
 	return result
 }
 
-func createNewCont(listLabel []string, listUM []string) {
+func createNewCont(listLabel []string, listUM []string) *fyne.Container {
 	// получаем все списки элементов + списки наименований
 
 	//vit := "Витамины"
@@ -52,7 +61,8 @@ func createNewCont(listLabel []string, listUM []string) {
 	n := 0 // вспомогательная переменная для того, что знать какой лэйб вытаскивать из общего списка лейблов
 	// 4 столба по 9 строк
 	for i := 0; i < 4; i++ {
-		for j := 0; j < 9; j++ {
+		for j := 0; j < 8; j++ {
+			//костыль
 
 			if i == 0 && j == 0 {
 				//vitamins
@@ -72,21 +82,30 @@ func createNewCont(listLabel []string, listUM []string) {
 			}
 			label := widget.NewLabel(listLabel[n])
 			entry := widget.NewEntry()
-			labelUM := widget.NewLabel(labelsUM[i]) // Unit Measure - единицы измерения
+			labelUM := widget.NewLabel(listUM[n]) // Unit Measure - единицы измерения
 			n++
 
 			// Сохраняем ссылку на поле ввода в карту
-			entries[labelText] = entry
+			//entries[labelText] = entry
 
 			//row := container.NewGridWithColumns(4, label, layout.NewSpacer(), entry, labelUM)
 			row := container.NewHBox(label, layout.NewSpacer(), entry, labelUM)
-			rows.Add(row)
-			rows.Add(widget.NewSeparator())
-
-			// создание столбца
-			label := widget.NewLabel("")
-			entry := widget.NewEntry()
+			columns[i].Add(row)
+			columns[i].Add(widget.NewSeparator())
+			//rows.Add(row)
+			//rows.Add(widget.NewSeparator())
 		}
-		fmt.Println()
+
 	}
+	globalContainer := container.NewHBox(
+		columns[0],
+		widget.NewSeparator(),
+		columns[1],
+		widget.NewSeparator(),
+		columns[2],
+		widget.NewSeparator(),
+		columns[3],
+	)
+
+	return globalContainer
 }
