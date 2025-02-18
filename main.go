@@ -1,10 +1,10 @@
 package main
 
-import (
-	"supportMod/frichtext"
-)
+import "supportMod/fixact"
 
 func main() {
-	//fynepos2.App()
-	frichtext.App()
+	//fynepos.App() // позиционирование для NutritionApplication
+	//fynepos2.App() // позиционирование для NutritionApplication
+	//frichtext.App() // Fyne RICH TEXT
+	fixact.App() // микроприложение (часть MaJo) для добавления активностей
 }

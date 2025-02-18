@@ -2,7 +2,10 @@ module supportMod
 
 go 1.22.2
 
-require fyne.io/fyne/v2 v2.5.4
+require (
+	fyne.io/fyne/v2 v2.5.4
+	github.com/mattn/go-sqlite3 v1.14.24
+)
 
 require (
 	fyne.io/systray v1.11.0 // indirect
