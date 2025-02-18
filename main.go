@@ -1,8 +1,6 @@
 package main
 
-import (
-	fynepositiontest "supportMod/fynePositionTest"
-)
+import fynepositiontest "supportMod/fynePositionTest"
 
 func main() {
 	//fynepos.App() // позиционирование для NutritionApplication
@@ -10,5 +8,5 @@ func main() {
 	//frichtext.App() // Fyne RICH TEXT
 	//fixact.App() // микроприложение (часть MaJo) для добавления активностей
 
-	fynepositiontest.App() // тесты с позиционированием
+	fynepositiontest.App() // тесты с позиционированием (формы)
 }
