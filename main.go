@@ -1,7 +1,7 @@
 package main
 
 import (
-	fixactforms "supportMod/fixact-forms"
+	fixactforms "supportMod/fynepositions/fixact-forms"
 )
 
 func main() {
