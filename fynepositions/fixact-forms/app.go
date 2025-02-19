@@ -37,31 +37,41 @@ func App() {
 
 	btn2 := widget.NewButton("!", func() {})
 
-	cont := awesomeShit(WIDTH, lbl, ent, btn)
-	cont2 := awesomeShit(WIDTH, lbl2, ent2, btn2)
+	// высоты строк
+	h1 := float32(10)
+	h2 := float32(50)
 
-	globcont := container.NewVBox(cont, cont2)
+	globContainer := container.NewWithoutLayout()
 
-	w.SetContent(globcont)
+	awesomeShit(globContainer, WIDTH, h1, lbl, ent, btn)
+	awesomeShit(globContainer, WIDTH, h2, lbl2, ent2, btn2)
+
+	w.SetContent(globContainer)
 	w.ShowAndRun()
 }
 
-func awesomeShit(w float32, objects ...fyne.CanvasObject) *fyne.Container {
-	// 3 колонки (размеры(%) 50:40:10)
-	// ratios - соотношения
+// название классное
+// принимает глобальный кастомный контейнер container.NewWithoutLayout(), ширину окна, высоту позиции строки виджетов (пока еще недоработан этот момент)
+// и пачку канвас объектов которые нужно расстрочить
+func awesomeShit(globContainer *fyne.Container, widthWindow float32, heightWidg float32, objects ...fyne.CanvasObject) {
+
+	// ratios - процентные соотношения, на которые делится окно
 	ratios := []float32{0, 50, 80}
 
-	percent := w / 100
+	// высчитываем 1 процент
+	percent := widthWindow / 100
 
-	positionsX := getVertLinePos(ratios, percent) // позиции вертикал линий
-	widthsX := getColumnWidths(positionsX, w)
-
-	cont := getContainer(positionsX, widthsX, objects...)
-	return cont
+	// получаем позиции вертик линий
+	positionsX := getVertLinePos(ratios, percent)
+	// получаем конкретные координаты вертикальных линий по Х
+	widthsX := getColumnWidths(positionsX, widthWindow)
+	// стругаем контейнер с уже позиционированными виджетами
+	addGlobContainer(globContainer, positionsX, widthsX, heightWidg, objects...)
 
 }
 
-// получить
+// получить позиции вертикальных границ
+// вспомогательная функция для awesomeShit
 func getVertLinePos(ratios []float32, percent float32) []float32 {
 	positionsX := []float32{} // 0, 250, 400
 	// вычисляем позиции вертикальных рамок
@@ -73,6 +83,9 @@ func getVertLinePos(ratios []float32, percent float32) []float32 {
 	fmt.Println("Позиции вертикальных линий : ", positionsX)
 	return positionsX
 }
+
+// получить позиции по оси Х
+// вспомогательная функция для awesomeShit
 func getColumnWidths(positionsX []float32, w float32) []float32 {
 	widthsX := []float32{}
 	// вычисляем ширины колонок
@@ -89,14 +102,14 @@ func getColumnWidths(positionsX []float32, w float32) []float32 {
 	fmt.Println("Ширины колонок : ", widthsX)
 	return widthsX
 }
-func getContainer(positionsX []float32, widthsX []float32, objects ...fyne.CanvasObject) *fyne.Container {
-	cont := container.NewWithoutLayout()
+
+// добавление объектов на кастомную сетку
+// вспомогательная функция для awesomeShit
+func addGlobContainer(globContainer *fyne.Container, positionsX []float32, widthsX []float32, heightWidg float32, objects ...fyne.CanvasObject) {
 
 	for k, v := range objects {
-		v.Move(fyne.NewPos(positionsX[k], 10))
+		v.Move(fyne.NewPos(positionsX[k], heightWidg))
 		v.Resize(fyne.NewSize(widthsX[k]-5, v.MinSize().Height))
-		cont.Add(v)
+		globContainer.Add(v)
 	}
-
-	return cont
 }
