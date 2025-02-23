@@ -1,7 +1,7 @@
 package main
 
 import (
-	fixactforms "supportMod/fynepositions/fixact-forms"
+	"supportMod/anothercode/todobroit2"
 )
 
 func main() {
@@ -13,5 +13,7 @@ func main() {
 	//fynepositiontest.App() // тесты с позиционированием (формы)
 
 	// МОЯ БИБЛИОТЕКА НАД fyne
-	fixactforms.App() // тест КАСТОМНОГО ОТОБРАЖЕНИЯ ЭЛЕМЕНТОВ
+	//fixactforms.App() // тест КАСТОМНОГО ОТОБРАЖЕНИЯ ЭЛЕМЕНТОВ
+	//todobroit.App() // пример TO DO приложение от BRO-IT
+	todobroit2.App() // пример TO DO приложение от BRO-IT (отредактированный мной)
 }

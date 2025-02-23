@@ -13,6 +13,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// omg
 type Activity struct {
 	Type      string
 	StartTime string
